@@ -1,7 +1,22 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: #f3f4f6;
+  background: var(--app-bg);
   font-family: Inter, system-ui, -apple-system, sans-serif;
-  color: #111827;
+  color: var(--text-main);
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  color: var(--text-main);
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 12%);
 }

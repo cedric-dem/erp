@@ -7,15 +7,15 @@
 
 .card {
   width: min(520px, 100%);
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
   border-radius: 14px;
   padding: 28px;
   box-shadow: 0 6px 24px rgb(0 0 0 / 8%);
 }
 
 .subtitle {
-  color: #4b5563;
+  color: var(--text-muted);
 }
 
 .tabs {
@@ -26,9 +26,9 @@
 }
 
 .tabs button {
-  border: 1px solid #d1d5db;
-  background: #f9fafb;
-  color: #374151;
+  border: 1px solid var(--border-color);
+  background: var(--surface-alt-color);
+  color: var(--text-main);
   border-radius: 8px;
   padding: 10px;
   cursor: pointer;
@@ -52,7 +52,9 @@ label {
 }
 
 input {
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-color);
+  background: var(--surface-alt-color);
+  color: var(--text-main);
   border-radius: 8px;
   padding: 10px;
   font: inherit;
@@ -64,8 +66,8 @@ input {
   border-radius: 8px;
   padding: 11px;
   font-weight: 600;
-  color: #fff;
-  background: #111827;
+  color: var(--button-primary-text);
+  background: var(--button-primary);
   cursor: pointer;
 }
 

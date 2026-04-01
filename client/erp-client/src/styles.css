@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --app-bg: #f3f4f6;
+  --surface-color: #ffffff;
+  --surface-alt-color: #f9fafb;
+  --border-color: #e5e7eb;
+  --text-main: #111827;
+  --text-muted: #4b5563;
+  --link-color: #2563eb;
+  --button-primary: #111827;
+  --button-primary-text: #ffffff;
+}
+
+:root[data-theme='dark'] {
+  --app-bg: #111827;
+  --surface-color: #1f2937;
+  --surface-alt-color: #111827;
+  --border-color: #374151;
+  --text-main: #f9fafb;
+  --text-muted: #d1d5db;
+  --link-color: #93c5fd;
+  --button-primary: #2563eb;
+  --button-primary-text: #ffffff;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--app-bg);
+  color: var(--text-main);
+}
