@@ -1,7 +1,11 @@
-<main class="home-shell">
-  <section class="home-card">
-    <h1>Homepage</h1>
-    <p>You are logged in as <strong>{{ username() }}</strong>.</p>
-    <a routerLink="/" (click)="logout()">Log out</a>
-  </section>
-</main>
+<div class="page-layout">
+  <app-side-nav></app-side-nav>
+
+  <main class="home-shell">
+    <section class="home-card">
+      <h1>Homepage</h1>
+      <p>You are logged in as <strong>{{ username() }}</strong>.</p>
+      <a routerLink="/" (click)="logout()">Log out</a>
+    </section>
+  </main>
+</div>

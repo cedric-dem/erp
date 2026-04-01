@@ -1,0 +1,9 @@
+.page-layout {
+  min-height: 100vh;
+  display: flex;
+}
+
+.content {
+  flex: 1;
+  padding: 32px;
+}

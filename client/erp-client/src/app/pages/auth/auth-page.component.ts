@@ -7,6 +7,7 @@ import { APP_STRINGS } from '../../app.strings';
 @Component({
   selector: 'app-auth-page',
   templateUrl: './auth-page.component.html',
+  standalone: true,
   styleUrl: './auth-page.component.css',
   imports: [FormsModule]
 })
