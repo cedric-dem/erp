@@ -1,0 +1,49 @@
+<main class="app-shell">
+  <section class="card">
+    <h1>{{ title() }}</h1>
+    <p class="subtitle">{{ strings.subtitle }}</p>
+
+    <div class="tabs">
+      <button type="button" [class.active]="mode() === 'login'" (click)="setMode('login')">
+        {{ strings.loginTab }}
+      </button>
+      <button type="button" [class.active]="mode() === 'register'" (click)="setMode('register')">
+        {{ strings.registerTab }}
+      </button>
+    </div>
+
+    @if (mode() === 'login') {
+      <form class="form" (ngSubmit)="login()">
+        <label>
+          {{ strings.usernameLabel }}
+          <input name="loginUsername" type="text" [(ngModel)]="loginUsername" />
+        </label>
+
+        <label>
+          {{ strings.passwordLabel }}
+          <input name="loginPassword" type="password" [(ngModel)]="loginPassword" />
+        </label>
+
+        <button class="submit" type="submit">{{ strings.loginSubmit }}</button>
+      </form>
+    } @else {
+      <form class="form" (ngSubmit)="register()">
+        <label>
+          {{ strings.usernameLabel }}
+          <input name="registerUsername" type="text" [(ngModel)]="registerUsername" />
+        </label>
+
+        <label>
+          {{ strings.passwordLabel }}
+          <input name="registerPassword" type="password" [(ngModel)]="registerPassword" />
+        </label>
+
+        <button class="submit" type="submit">{{ strings.registerSubmit }}</button>
+      </form>
+    }
+
+    @if (message()) {
+      <p class="feedback" [class.error]="isError()">{{ message() }}</p>
+    }
+  </section>
+</main>

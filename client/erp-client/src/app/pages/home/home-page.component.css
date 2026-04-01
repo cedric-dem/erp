@@ -1,0 +1,23 @@
+.home-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.home-card {
+  width: min(520px, 100%);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 8%);
+}
+
+a {
+  display: inline-block;
+  margin-top: 12px;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
