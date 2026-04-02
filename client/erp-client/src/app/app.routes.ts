@@ -4,6 +4,7 @@ import { HomePageComponent } from './pages/home/home-page.component';
 import { InventoryPageComponent } from './pages/inventory/inventory-page.component';
 import { BillPageComponent } from './pages/bill/bill-page.component';
 import { SettingsPageComponent } from './pages/settings/settings-page.component';
+import { HistoryPageComponent } from './pages/history/history-page.component';
 
 export const routes: Routes = [
   { path: '', component: AuthPageComponent },
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'inventory', component: InventoryPageComponent },
   { path: 'bill', component: BillPageComponent },
   { path: 'settings', component: SettingsPageComponent },
+  { path: 'history', component: HistoryPageComponent },
   { path: '**', redirectTo: '' }
 ];
