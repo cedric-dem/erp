@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SideNavComponent } from '../../components/side-nav/side-nav.component';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-settings-page',
@@ -8,4 +9,6 @@ import { SideNavComponent } from '../../components/side-nav/side-nav.component';
   styleUrl: './settings-page.component.css',
   imports: [SideNavComponent]
 })
-export class SettingsPageComponent {}
+export class SettingsPageComponent {
+  readonly themeService = inject(ThemeService);
+}

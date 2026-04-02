@@ -1,7 +1,17 @@
 <div class="page-layout">
   <app-side-nav></app-side-nav>
   <main class="content">
-    <h1>Settings</h1>
+    <div class="header-row">
+      <h1>Settings</h1>
+      <button
+        class="theme-toggle"
+        type="button"
+        (click)="themeService.toggleTheme()"
+        [attr.aria-label]="themeService.themeToggleLabel()"
+      >
+        {{ themeService.theme() === 'dark' ? '☀️ Light' : '🌙 Dark' }}
+      </button>
+    </div>
     <p>This is the settings page.</p>
   </main>
 </div>
