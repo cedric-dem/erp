@@ -1,6 +1,7 @@
 .page-layout {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
+  overflow: hidden;
 }
 
 .content {
@@ -8,15 +9,21 @@
   padding: 24px;
   display: grid;
   align-items: start;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .history-card {
-  width: min(90%);
+  width: 90%;
+  height: 90%;
   background: var(--surface-color);
   border: 1px solid var(--border-color);
   border-radius: 14px;
   padding: 24px;
   box-shadow: 0 6px 24px rgb(0 0 0 / 8%);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .card-header {
@@ -84,7 +91,9 @@ h2 {
   margin-top: 4px;
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  overflow: hidden;
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .history-table {
@@ -109,35 +118,4 @@ h2 {
 
 .history-table tbody tr:last-child td {
   border-bottom: none;
-}
-
-.positive {
-  color: #027a48;
-  font-weight: 600;
-}
-
-.negative {
-  color: #b42318;
-  font-weight: 600;
-}
-
-.empty-row {
-  text-align: center;
-  color: var(--text-muted);
-}
-
-@media (max-width: 700px) {
-  .content {
-    padding: 16px;
-  }
-
-  .history-card {
-    padding: 16px;
-  }
-}
-
-error {
-  margin-top: 12px;
-  color: #b42318;
-  font-weight: 500;
 }

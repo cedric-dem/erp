@@ -1,5 +1,7 @@
 .side-nav {
   width: 220px;
+  height: 100vh;
+  box-sizing: border-box;
   min-height: 100vh;
   background: var(--surface-color);
   border-right: 1px solid var(--border-color);

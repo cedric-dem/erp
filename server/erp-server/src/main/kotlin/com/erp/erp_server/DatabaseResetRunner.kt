@@ -76,6 +76,7 @@ class DatabaseResetRunner(
             }
         }
     }
+
     companion object {
         private val logger = LoggerFactory.getLogger(DatabaseResetRunner::class.java)
         const val MODE_PROPERTY = "app.db-reset.mode"
@@ -88,7 +89,19 @@ class DatabaseResetRunner(
             "Mechanical Keyboard" to BigDecimal("89.00"),
             "Webcam 1080p" to BigDecimal("54.99"),
             "Monitor Arm" to BigDecimal("74.50"),
-            "Ethernet Switch" to BigDecimal("44.25")
+            "Ethernet Switch" to BigDecimal("44.25"),
+            "Desktop Computer" to BigDecimal("899.00"),
+            "Office Desk" to BigDecimal("219.99"),
+            "VR Headset" to BigDecimal("399.00"),
+            "Gaming Chair" to BigDecimal("179.50"),
+            "Docking Station" to BigDecimal("129.00"),
+            "External SSD 1TB" to BigDecimal("109.00"),
+            "Surge Protector" to BigDecimal("19.99"),
+            "Projector" to BigDecimal("499.00"),
+            "Printer Toner" to BigDecimal("64.40"),
+            "Noise Cancelling Headphones" to BigDecimal("249.99"),
+            "Smartphone Stand" to BigDecimal("16.25"),
+            "Whiteboard" to BigDecimal("85.00")
         )
 
         private val mockUserCredentials = listOf(
@@ -187,6 +200,66 @@ class DatabaseResetRunner(
                 MockHistoryEntry(LocalDateTime.of(2016, Month.OCTOBER, 1, 7, 55), 14, "johnny.johnson"),
                 MockHistoryEntry(LocalDateTime.of(2021, Month.SEPTEMBER, 27, 12, 35), 52, "jeffanie.jefferson"),
                 MockHistoryEntry(LocalDateTime.of(2026, Month.JANUARY, 7, 9, 5), -2, "geoff.jefferson")
+            ),
+            "Desktop Computer" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2017, Month.FEBRUARY, 6, 9, 30), 10, "bobby.johnson"),
+                MockHistoryEntry(LocalDateTime.of(2022, Month.AUGUST, 17, 15, 20), 25, "johnny.bobson"),
+                MockHistoryEntry(LocalDateTime.of(2025, Month.DECEMBER, 10, 10, 40), -3, "geoff.jefferson")
+            ),
+            "Office Desk" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2018, Month.MAY, 2, 8, 15), 8, "jeffanie.jefferson"),
+                MockHistoryEntry(LocalDateTime.of(2023, Month.JANUARY, 19, 14, 55), 12, "leroy.jenkin"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.MARCH, 18, 9, 25), -1, "bobby.bobson")
+            ),
+            "VR Headset" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2019, Month.JULY, 30, 11, 5), 6, "johnny.johnson"),
+                MockHistoryEntry(LocalDateTime.of(2024, Month.APRIL, 8, 16, 30), 18, "bobby.bobson"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.FEBRUARY, 22, 13, 45), -2, "johnny.bobson")
+            ),
+            "Gaming Chair" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2017, Month.SEPTEMBER, 11, 10, 0), 9, "geoff.jefferson"),
+                MockHistoryEntry(LocalDateTime.of(2021, Month.NOVEMBER, 3, 12, 20), 20, "leroy.jenkin"),
+                MockHistoryEntry(LocalDateTime.of(2025, Month.MAY, 15, 17, 10), -2, "johnny.johnson")
+            ),
+            "Docking Station" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2018, Month.JUNE, 7, 9, 40), 13, "bobby.bobson"),
+                MockHistoryEntry(LocalDateTime.of(2023, Month.MARCH, 27, 14, 5), 16, "geoff.jefferson"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.JANUARY, 23, 10, 50), -1, "jeffanie.jefferson")
+            ),
+            "External SSD 1TB" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2019, Month.DECEMBER, 1, 11, 10), 22, "johnny.bobson"),
+                MockHistoryEntry(LocalDateTime.of(2022, Month.OCTOBER, 13, 13, 35), 14, "bobby.johnson"),
+                MockHistoryEntry(LocalDateTime.of(2025, Month.AUGUST, 9, 15, 5), -4, "leroy.jenkin")
+            ),
+            "Surge Protector" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2016, Month.MAY, 18, 8, 25), 30, "johnny.johnson"),
+                MockHistoryEntry(LocalDateTime.of(2020, Month.JULY, 21, 10, 45), 25, "jeffanie.jefferson"),
+                MockHistoryEntry(LocalDateTime.of(2024, Month.NOVEMBER, 30, 16, 15), -5, "bobby.bobson")
+            ),
+            "Projector" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2018, Month.FEBRUARY, 24, 9, 55), 5, "geoff.jefferson"),
+                MockHistoryEntry(LocalDateTime.of(2021, Month.APRIL, 12, 13, 50), 7, "leroy.jenkin"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.MARCH, 1, 11, 30), -1, "johnny.bobson")
+            ),
+            "Printer Toner" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2017, Month.JANUARY, 9, 7, 45), 40, "bobby.johnson"),
+                MockHistoryEntry(LocalDateTime.of(2022, Month.DECEMBER, 20, 14, 40), 30, "bobby.bobson"),
+                MockHistoryEntry(LocalDateTime.of(2025, Month.OCTOBER, 2, 12, 55), -6, "jeffanie.jefferson")
+            ),
+            "Noise Cancelling Headphones" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2019, Month.MARCH, 16, 10, 20), 11, "johnny.johnson"),
+                MockHistoryEntry(LocalDateTime.of(2023, Month.JULY, 5, 15, 15), 9, "johnny.bobson"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.FEBRUARY, 27, 9, 35), -2, "geoff.jefferson")
+            ),
+            "Smartphone Stand" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2016, Month.JUNE, 22, 8, 5), 26, "leroy.jenkin"),
+                MockHistoryEntry(LocalDateTime.of(2021, Month.JANUARY, 28, 11, 25), 18, "bobby.johnson"),
+                MockHistoryEntry(LocalDateTime.of(2024, Month.AUGUST, 14, 16, 45), -3, "jeffanie.jefferson")
+            ),
+            "Whiteboard" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2018, Month.AUGUST, 31, 9, 10), 7, "johnny.bobson"),
+                MockHistoryEntry(LocalDateTime.of(2022, Month.FEBRUARY, 10, 14, 20), 9, "geoff.jefferson"),
+                MockHistoryEntry(LocalDateTime.of(2025, Month.DECEMBER, 12, 13, 15), -1, "bobby.bobson")
             )
         )
 

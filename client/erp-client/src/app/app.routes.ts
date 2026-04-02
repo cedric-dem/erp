@@ -5,6 +5,8 @@ import { InventoryPageComponent } from './pages/inventory/inventory-page.compone
 import { BillPageComponent } from './pages/bill/bill-page.component';
 import { SettingsPageComponent } from './pages/settings/settings-page.component';
 import { HistoryPageComponent } from './pages/history/history-page.component';
+import { UsersPageComponent } from './pages/users/users-page.component';
+import { InsightsPageComponent } from './pages/insights/insights-page.component';
 
 export const routes: Routes = [
   { path: '', component: AuthPageComponent },
@@ -13,5 +15,7 @@ export const routes: Routes = [
   { path: 'bill', component: BillPageComponent },
   { path: 'settings', component: SettingsPageComponent },
   { path: 'history', component: HistoryPageComponent },
+  { path: 'insights', component: InsightsPageComponent },
+  { path: 'users', component: UsersPageComponent },
   { path: '**', redirectTo: '' }
 ];
