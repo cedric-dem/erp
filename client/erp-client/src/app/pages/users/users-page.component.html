@@ -1,7 +1,38 @@
 <div class="page-layout">
   <app-side-nav></app-side-nav>
+
   <main class="content">
-    <h1>Users</h1>
-    <p>This is the users page.</p>
+    <section class="users-card">
+      <header class="card-header">
+        <div>
+          <h1>Users</h1>
+          <p class="subtitle">Current users shown in a scrollable table format.</p>
+        </div>
+        <div class="count-chip">{{ userRows().length }} users</div>
+      </header>
+
+      <div class="table-shell">
+        <table class="users-table">
+          <thead>
+          <tr>
+            <th>Username</th>
+            <th>User Type</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (row of userRows(); track $index) {
+              <tr>
+                <td>{{ row.username }}</td>
+                <td>{{ row.userType }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td class="empty-row" colspan="2">No users to display.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
 </div>

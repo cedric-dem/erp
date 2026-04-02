@@ -3,17 +3,30 @@ package com.erp.erp_server
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
+data class UserSummaryResponse(
+    val id: Long,
+    val username: String,
+    val userType: String
+)
+
 @RestController
-class HealthController {
+class HealthController(
+    private val userCredentialRepository: UserCredentialRepository
+) {
     @GetMapping("/api/health")
     fun health(): Map<String, String> = mapOf(
         "status" to "UP",
         "service" to "erp-server"
     )
 
-    @GetMapping("/users")
-    fun users(): List<Map<String, String>> = listOf(
-        mapOf("id" to "1", "name" to "Alice"),
-        mapOf("id" to "2", "name" to "Bob")
-    )
+    @GetMapping("/api/users")
+    fun users(): List<UserSummaryResponse> = userCredentialRepository.findAll()
+        .sortedBy { it.id }
+        .map { user ->
+            UserSummaryResponse(
+                id = user.id ?: 0L,
+                username = user.username,
+                userType = user.userType.lowercase()
+            )
+        }
 }
