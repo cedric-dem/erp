@@ -10,15 +10,9 @@ data class UserSummaryResponse(
 )
 
 @RestController
-class HealthController(
+class UserController(
     private val userCredentialRepository: UserCredentialRepository
 ) {
-    @GetMapping("/api/health")
-    fun health(): Map<String, String> = mapOf(
-        "status" to "UP",
-        "service" to "erp-server"
-    )
-
     @GetMapping("/api/users")
     fun users(): List<UserSummaryResponse> = userCredentialRepository.findAll()
         .sortedBy { it.id }
