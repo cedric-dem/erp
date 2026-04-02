@@ -1,7 +1,47 @@
 <div class="page-layout">
   <app-side-nav></app-side-nav>
+
   <main class="content">
-    <h1>History</h1>
-    <p>This is the history page.</p>
+    <section class="history-card">
+      <header class="card-header">
+        <div>
+          <h1>History</h1>
+          <p class="subtitle">All inventory modifications made by users.</p>
+        </div>
+      </header>
+      <h2>Modification table</h2>
+      <div class="table-shell">
+        <table class="history-table">
+          <thead>
+          <tr>
+            <th>Date</th>
+            <th>Quantity Move</th>
+            <th>Item Name</th>
+            <th>User Name</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (row of modificationRows(); track $index) {
+              <tr>
+                <td>{{ row.modifiedAt }}</td>
+                <td [class.negative]="row.quantityMove < 0" [class.positive]="row.quantityMove > 0">
+                  {{ quantityMoveLabel(row.quantityMove) }}
+                </td>
+                <td>{{ row.itemName }}</td>
+                <td>{{ row.userName }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="empty-row">No modification data available.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+    </section>
   </main>
 </div>

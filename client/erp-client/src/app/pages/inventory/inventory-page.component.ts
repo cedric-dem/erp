@@ -28,6 +28,8 @@ export class InventoryPageComponent implements OnInit {
   protected newQuantity = 0;
   protected newPrice = 0;
 
+  private readonly username = sessionStorage.getItem('erpUsername') ?? 'User';
+
   constructor(private readonly http: HttpClient) {}
 
   ngOnInit(): void {
@@ -56,7 +58,8 @@ export class InventoryPageComponent implements OnInit {
       .post<InventoryItem>('/api/inventory', {
         name,
         quantity: this.newQuantity,
-        price: this.newPrice
+        price: this.newPrice,
+        userName: this.username
       })
       .subscribe({
         next: (createdItem) => {

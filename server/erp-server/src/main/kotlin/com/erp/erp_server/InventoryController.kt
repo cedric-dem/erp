@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.math.BigDecimal
+import java.time.LocalDateTime
 
 data class InventoryItemRequest(
     val name: String = "",
     val quantity: Int = 0,
-    val price: BigDecimal = BigDecimal.ZERO
+    val price: BigDecimal = BigDecimal.ZERO,
+    val userName: String = ""
 )
 
 data class InventoryItemResponse(
@@ -25,7 +27,8 @@ data class InventoryItemResponse(
 @RestController
 @RequestMapping("/api/inventory")
 class InventoryController(
-    private val inventoryRepository: InventoryItemRepository
+    private val inventoryRepository: InventoryItemRepository,
+    private val inventoryModificationRepository: InventoryModificationRepository
 ) {
     @GetMapping
     fun getInventory(): List<InventoryItemResponse> {
@@ -52,6 +55,15 @@ class InventoryController(
                 name = name,
                 quantity = request.quantity,
                 price = request.price
+            )
+        )
+
+        inventoryModificationRepository.save(
+            InventoryModification(
+                modifiedAt = LocalDateTime.now(),
+                quantityMove = created.quantity,
+                itemName = created.name,
+                userName = request.userName.trim().ifEmpty { "User" }
             )
         )
 
