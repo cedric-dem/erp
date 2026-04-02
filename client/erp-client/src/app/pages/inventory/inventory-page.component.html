@@ -1,7 +1,79 @@
 <div class="page-layout">
   <app-side-nav></app-side-nav>
+
   <main class="content">
-    <h1>Inventory</h1>
-    <p>This is the inventory page.</p>
+    <section class="inventory-card">
+      <header class="card-header">
+        <div>
+          <h1>Inventory</h1>
+          <p class="subtitle">Track what you have in stock and quickly add new items.</p>
+        </div>
+        <div class="count-chip">{{ inventoryRows().length }} items</div>
+      </header>
+
+      <div class="table-shell">
+        <table class="inventory-table">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (row of inventoryRows(); track $index) {
+              <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>${{ formatPrice(row[2]) }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="3" class="empty-row">No items in inventory.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <button class="add-button" type="button" (click)="toggleAddForm()">+ Add item</button>
+
+      @if (showAddForm()) {
+        <div class="modal-backdrop" (click)="closeAddForm()">
+          <div class="modal-card" (click)="$event.stopPropagation()">
+            <header class="modal-header">
+              <h2>Add inventory item</h2>
+              <button class="close-button" type="button" (click)="closeAddForm()">✕</button>
+            </header>
+
+            <form class="add-form" (ngSubmit)="addInventoryItem()">
+              <label>
+                Name
+                <input type="text" name="name" placeholder="Item name" [(ngModel)]="newName" />
+              </label>
+
+              <label>
+                Quantity
+                <input type="number" name="quantity" min="0" [(ngModel)]="newQuantity" />
+              </label>
+
+              <label>
+                Price
+                <input type="number" name="price" min="0" step="0.01" [(ngModel)]="newPrice" />
+              </label>
+
+              <div class="form-actions">
+                <button type="button" class="secondary-button" (click)="closeAddForm()">Cancel</button>
+                <button type="submit">Save item</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+    </section>
   </main>
 </div>
