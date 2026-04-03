@@ -117,7 +117,7 @@ class DatabaseResetRunner(
 
         private fun buildMockUsers(): List<UserCredential> {
             return mockUserCredentials.map { (username, password) ->
-                UserCredential(username = username, password = password)
+                UserCredential(username = username, password = password, project = "it_material")
             }
         }
 
