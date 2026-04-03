@@ -46,6 +46,28 @@ h1 {
   font-weight: 600;
   cursor: pointer;
 }
+.project-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.project-actions button {
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--surface-alt-color);
+  color: var(--text-main);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.project-actions button.active {
+  background: var(--button-primary);
+  color: var(--button-primary-text);
+  border-color: transparent;
+}
+
 
 .tabs button.active,
 .submit {

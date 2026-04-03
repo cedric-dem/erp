@@ -4,12 +4,16 @@ export const APP_STRINGS = {
   registerTab: 'Create Account',
   usernameLabel: 'User',
   passwordLabel: 'Password',
+  projectLabel: 'Project',
+  projectActionLabel: 'Project Access',
+  joinProject: 'Join Existing',
+  createProject: 'Create New',
   loginSubmit: 'Log In',
   registerSubmit: 'Create Account',
   errors: {
     loginEmpty: 'Please enter a username and password.',
     loginInvalid: 'Invalid credentials.',
-    registerEmpty: 'Please choose a username and password.',
+    registerEmpty: 'Please choose a username, password, and project.',
     registerExists: 'This username already exists.'
   },
   success: {

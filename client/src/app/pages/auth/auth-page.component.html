@@ -38,6 +38,29 @@
           <input name="registerPassword" type="password" [(ngModel)]="registerPassword" />
         </label>
 
+        <label>
+          {{ strings.projectActionLabel }}
+          <div class="project-actions">
+            <button
+              type="button"
+              [class.active]="registerProjectAction === 'join'"
+              (click)="registerProjectAction = 'join'">
+              {{ strings.joinProject }}
+            </button>
+            <button
+              type="button"
+              [class.active]="registerProjectAction === 'create'"
+              (click)="registerProjectAction = 'create'">
+              {{ strings.createProject }}
+            </button>
+          </div>
+        </label>
+
+        <label>
+          {{ strings.projectLabel }}
+          <input name="registerProject" type="text" [(ngModel)]="registerProject" />
+        </label>
+
         <button class="submit" type="submit">{{ strings.registerSubmit }}</button>
       </form>
     }
