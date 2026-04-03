@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { APP_STRINGS } from '../../app.strings';
@@ -22,6 +22,8 @@ export class AuthPageComponent {
   protected loginPassword = '';
   protected registerUsername = '';
   protected registerPassword = '';
+  protected registerProject = '';
+  protected registerProjectAction: 'join' | 'create' = 'join';
 
   constructor(
     private readonly http: HttpClient,
@@ -60,22 +62,31 @@ export class AuthPageComponent {
   protected register(): void {
     const username = this.registerUsername.trim();
     const password = this.registerPassword.trim();
+    const project = this.registerProject.trim();
+    const projectAction = this.registerProjectAction;
 
-    if (!username || !password) {
+    if (!username || !password || !project) {
       this.setFeedback(this.strings.errors.registerEmpty, true);
       return;
     }
 
     this.http
-      .post<{ message: string }>('/api/auth/register', { username, password })
+      .post<{ message: string }>('/api/auth/register', { username, password, project, projectAction })
       .subscribe({
         next: () => {
           this.setFeedback(this.strings.success.registerCreated, false);
           this.registerUsername = '';
           this.registerPassword = '';
+          this.registerProject = '';
+          this.registerProjectAction = 'join';
           this.mode.set('login');
         },
-        error: () => {
+        error: (response: HttpErrorResponse) => {
+          const apiMessage = response.error?.message;
+          if (typeof apiMessage === 'string' && apiMessage.trim().length > 0) {
+            this.setFeedback(apiMessage, true);
+            return;
+          }
           this.setFeedback(this.strings.errors.registerExists, true);
         }
       });

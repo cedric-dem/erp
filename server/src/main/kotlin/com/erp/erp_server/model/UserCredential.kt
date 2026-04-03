@@ -20,6 +20,10 @@ class UserCredential(
     @Column(nullable = false)
     val password: String,
 
-    @Column(nullable = false, columnDefinition = "varchar(50) default 'NORMAL'")
+
+    @Column(nullable = false, columnDefinition = "varchar(255) default 'default'")
+    val project: String = "default",
+
+    @Column(nullable = false)
     val userType: String = "NORMAL"
 )

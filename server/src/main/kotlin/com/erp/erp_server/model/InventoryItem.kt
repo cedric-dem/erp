@@ -22,5 +22,8 @@ class InventoryItem(
     val quantity: Int,
 
     @Column(nullable = false, precision = 12, scale = 2)
-    val price: BigDecimal
+    val price: BigDecimal,
+
+    @Column(nullable = false, columnDefinition = "varchar(255) default 'default'")
+    val project: String = "default"
 )

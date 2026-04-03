@@ -24,11 +24,12 @@ type UserSummaryApiResponse = {
 })
 export class UsersPageComponent implements OnInit {
   protected readonly userRows = signal<UserSummary[]>([]);
+  private readonly username = sessionStorage.getItem('erpUsername') ?? '';
 
   constructor(private readonly http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<UserSummaryApiResponse[]>('/api/users').subscribe({
+    this.http.get<UserSummaryApiResponse[]>(`/api/users?username=${encodeURIComponent(this.username)}`).subscribe({
       next: (rows) => this.userRows.set(rows.map((row) => ({
         id: row.id,
         username: row.username,

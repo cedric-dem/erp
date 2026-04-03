@@ -28,7 +28,7 @@ export class InventoryPageComponent implements OnInit {
   protected newQuantity = 0;
   protected newPrice = 0;
 
-  private readonly username = sessionStorage.getItem('erpUsername') ?? 'User';
+  private readonly username = sessionStorage.getItem('erpUsername') ?? '';
 
   constructor(private readonly http: HttpClient) {}
 
@@ -83,7 +83,7 @@ export class InventoryPageComponent implements OnInit {
   }
 
   private loadInventory(): void {
-    this.http.get<InventoryItem[]>('/api/inventory').subscribe({
+    this.http.get<InventoryItem[]>(`/api/inventory?username=${encodeURIComponent(this.username)}`).subscribe({
       next: (items) => {
         this.inventoryRows.set(items.map((item) => [item.name, item.quantity, item.price]));
       },

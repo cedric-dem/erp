@@ -19,6 +19,7 @@ interface InventoryModificationRow {
 export class HistoryPageComponent implements OnInit {
   protected readonly modificationRows = signal<InventoryModificationRow[]>([]);
   protected readonly errorMessage = signal('');
+  private readonly username = sessionStorage.getItem('erpUsername') ?? '';
 
   constructor(private readonly http: HttpClient) {}
 
@@ -31,13 +32,15 @@ export class HistoryPageComponent implements OnInit {
   }
 
   private loadHistoryModifications(): void {
-    this.http.get<InventoryModificationRow[]>('/api/history-modifications').subscribe({
-      next: (rows) => {
-        this.modificationRows.set(rows);
-      },
-      error: () => {
-        this.errorMessage.set('Could not load modification data.');
-      }
-    });
+    this.http
+      .get<InventoryModificationRow[]>(`/api/history-modifications?username=${encodeURIComponent(this.username)}`)
+      .subscribe({
+        next: (rows) => {
+          this.modificationRows.set(rows);
+        },
+        error: () => {
+          this.errorMessage.set('Could not load modification data.');
+        }
+      });
   }
 }

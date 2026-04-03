@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -28,11 +30,14 @@ data class InventoryItemResponse(
 @RequestMapping("/api/inventory")
 class InventoryController(
     private val inventoryRepository: InventoryItemRepository,
-    private val inventoryModificationRepository: InventoryModificationRepository
+    private val inventoryModificationRepository: InventoryModificationRepository,
+    private val authService: AuthService
 ) {
     @GetMapping
-    fun getInventory(): List<InventoryItemResponse> {
-        return inventoryRepository.findAll().map { item ->
+    fun getInventory(@RequestParam username: String): List<InventoryItemResponse> {
+        val project = resolveProject(username)
+
+        return inventoryRepository.findAllByProject(project).map { item ->
             InventoryItemResponse(
                 id = item.id,
                 name = item.name,
@@ -45,6 +50,7 @@ class InventoryController(
     @PostMapping
     fun addInventoryItem(@RequestBody request: InventoryItemRequest): ResponseEntity<InventoryItemResponse> {
         val name = request.name.trim()
+        val project = resolveProject(request.userName)
 
         if (name.isEmpty() || request.quantity < 0 || request.price < BigDecimal.ZERO) {
             return ResponseEntity.badRequest().build()
@@ -54,7 +60,8 @@ class InventoryController(
             InventoryItem(
                 name = name,
                 quantity = request.quantity,
-                price = request.price
+                price = request.price,
+                project = project
             )
         )
 
@@ -63,7 +70,8 @@ class InventoryController(
                 modifiedAt = LocalDateTime.now(),
                 quantityMove = created.quantity,
                 itemName = created.name,
-                userName = request.userName.trim().ifEmpty { "User" }
+                userName = request.userName.trim().ifEmpty { "User" },
+                project = project
             )
         )
 
@@ -75,5 +83,15 @@ class InventoryController(
                 price = created.price
             )
         )
+    }
+
+    private fun resolveProject(username: String): String {
+        val sanitizedUsername = username.trim()
+        if (sanitizedUsername.isEmpty()) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing username")
+        }
+
+        return authService.findProjectByUsername(sanitizedUsername)
+            ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Unknown user")
     }
 }

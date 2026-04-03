@@ -25,5 +25,8 @@ class InventoryModification(
     val itemName: String,
 
     @Column(nullable = false)
-    val userName: String
+    val userName: String,
+
+    @Column(nullable = false, columnDefinition = "varchar(255) default 'default'")
+    val project: String = "default"
 )

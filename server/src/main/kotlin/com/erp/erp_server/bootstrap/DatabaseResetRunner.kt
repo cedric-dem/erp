@@ -58,6 +58,26 @@ class DatabaseResetRunner(
         )
     }
 
+
+    private fun buildMockInventoryItems(): List<InventoryItem> {
+        return mockInventoryItemDetailsByProject.flatMap { (project, itemsByName) ->
+            itemsByName.map { (name, price) ->
+                val quantity = mockHistoryByProjectAndItem[project]
+                    ?.get(name)
+                    ?.sumOf { it.quantityMove }
+                    ?: 0
+
+                InventoryItem(
+                    name = name,
+                    quantity = quantity,
+                    price = price,
+                    project = project
+                )
+            }
+        }
+
+    }
+
     enum class ResetMode {
         NONE,
         EMPTY,
@@ -81,82 +101,99 @@ class DatabaseResetRunner(
         private val logger = LoggerFactory.getLogger(DatabaseResetRunner::class.java)
         const val MODE_PROPERTY = "app.db-reset.mode"
 
-        private val mockInventoryItemDetails = mapOf(
-            "USB-C Cable" to BigDecimal("9.99"),
-            "Wireless Mouse" to BigDecimal("24.90"),
-            "Laptop Stand" to BigDecimal("39.50"),
-            "HDMI Adapter" to BigDecimal("14.75"),
-            "Mechanical Keyboard" to BigDecimal("89.00"),
-            "Webcam 1080p" to BigDecimal("54.99"),
-            "Monitor Arm" to BigDecimal("74.50"),
-            "Ethernet Switch" to BigDecimal("44.25"),
-            "Desktop Computer" to BigDecimal("899.00"),
-            "Office Desk" to BigDecimal("219.99"),
-            "VR Headset" to BigDecimal("399.00"),
-            "Gaming Chair" to BigDecimal("179.50"),
-            "Docking Station" to BigDecimal("129.00"),
-            "External SSD 1TB" to BigDecimal("109.00"),
-            "Surge Protector" to BigDecimal("19.99"),
-            "Projector" to BigDecimal("499.00"),
-            "Printer Toner" to BigDecimal("64.40"),
-            "Noise Cancelling Headphones" to BigDecimal("249.99"),
-            "Smartphone Stand" to BigDecimal("16.25"),
-            "Whiteboard" to BigDecimal("85.00")
+        private val mockInventoryItemDetailsByProject = mapOf(
+            "it_material" to mapOf(
+                "USB-C Cable" to BigDecimal("9.99"),
+                "Wireless Mouse" to BigDecimal("24.90"),
+                "Laptop Stand" to BigDecimal("39.50"),
+                "HDMI Adapter" to BigDecimal("14.75"),
+                "Mechanical Keyboard" to BigDecimal("89.00"),
+                "Webcam 1080p" to BigDecimal("54.99"),
+                "Monitor Arm" to BigDecimal("74.50"),
+                "Ethernet Switch" to BigDecimal("44.25"),
+                "Desktop Computer" to BigDecimal("899.00"),
+                "Office Desk" to BigDecimal("219.99"),
+                "VR Headset" to BigDecimal("399.00"),
+                "Gaming Chair" to BigDecimal("179.50"),
+                "Docking Station" to BigDecimal("129.00"),
+                "External SSD 1TB" to BigDecimal("109.00"),
+                "Surge Protector" to BigDecimal("19.99"),
+                "Projector" to BigDecimal("499.00"),
+                "Printer Toner" to BigDecimal("64.40"),
+                "Noise Cancelling Headphones" to BigDecimal("249.99"),
+                "Smartphone Stand" to BigDecimal("16.25"),
+                "Whiteboard" to BigDecimal("85.00")
+            ),
+            "garage" to mapOf(
+                "Brake Pads" to BigDecimal("49.90"),
+                "Oil Filter" to BigDecimal("12.50"),
+                "Spark Plug Set" to BigDecimal("34.00"),
+                "Headlight Bulb" to BigDecimal("18.75"),
+                "Car Battery" to BigDecimal("129.00"),
+                "Alternator Belt" to BigDecimal("27.40"),
+                "Air Intake Filter" to BigDecimal("21.30"),
+                "Windshield Wipers" to BigDecimal("22.90")
+            )
+        )
+
+        private data class MockUserCredential(
+            val username: String,
+            val password: String,
+            val project: String,
+            val userType: String = "NORMAL"
         )
 
         private val mockUserCredentials = listOf(
-            "ced" to "ced",
-            "bobby.johnson" to "azerty123",
-            "bobby.bobson" to "minecraft73",
-            "johnny.johnson" to "jooooohny",
-            "johnny.bobson" to "azerty",
-            "jeffanie.jefferson" to "azerty1234567891011121314151617181920",
-            "geoff.jefferson" to "tg99",
-            "leroy.jenkin" to "wow"
+            MockUserCredential("bobby.johnson", "azerty123", "it_material", userType = "ADMIN"),
+            MockUserCredential("bobby.bobson", "minecraft73", "it_material"),
+            MockUserCredential("johnny.johnson", "jooooohny", "it_material"),
+            MockUserCredential("johnny.bobson", "azerty", "it_material"),
+            MockUserCredential("jeffanie.jefferson", "azerty1234567891011121314151617181920", "it_material"),
+            MockUserCredential("leroy.jenkin", "wow", "it_material"),
+
+            MockUserCredential("ced.ric", "ced", "garage", userType = "ADMIN"),
+            MockUserCredential("jeremy.hammond", "wrench42", "garage"),
+            MockUserCredential("richard.may", "torque88", "garage"),
+            MockUserCredential("james.clarkson", "piston777", "garage"),
+            MockUserCredential("mia.tia", "garageflow", "garage"),
+            MockUserCredential("geoff.jefferson", "tg99", "garage"),
         )
 
         private fun buildMockUsers(): List<UserCredential> {
-            return mockUserCredentials.map { (username, password) ->
-                UserCredential(username = username, password = password)
-            }
-        }
-
-        private fun buildMockInventoryItems(): List<InventoryItem> {
-            val quantityByItem = mockHistoryByItem.mapValues { (_, entries) ->
-                entries.sumOf { it.quantityMove }
-            }
-
-            return quantityByItem.mapNotNull { (itemName, quantity) ->
-                val price = mockInventoryItemDetails[itemName]
-                if (price == null) {
-                    null
-                } else {
-                    InventoryItem(name = itemName, quantity = quantity, price = price)
-                }
+            return mockUserCredentials.map { mockUser ->
+                UserCredential(
+                    username = mockUser.username,
+                    password = mockUser.password,
+                    project = mockUser.project,
+                    userType = mockUser.userType
+                )
             }
         }
 
         private fun buildMockInventoryHistory(savedItems: List<InventoryItem>): List<InventoryModification> {
             val savedItemsByName = savedItems.associateBy { it.name }
 
-            return mockHistoryByItem.flatMap { (itemName, entries) ->
-                val item = savedItemsByName[itemName]
-                if (item == null) {
-                    emptyList()
-                } else {
-                    entries.map { entry ->
-                        InventoryModification(
-                            modifiedAt = entry.modifiedAt,
-                            quantityMove = entry.quantityMove,
-                            itemName = item.name,
-                            userName = entry.userName
-                        )
+            return mockHistoryByProjectAndItem.flatMap { (project, historyByItem) ->
+                historyByItem.flatMap { (itemName, entries) ->
+                    val item = savedItemsByName[itemName]
+                    if (item == null) {
+                        emptyList()
+                    } else {
+                        entries.map { entry ->
+                            InventoryModification(
+                                modifiedAt = entry.modifiedAt,
+                                quantityMove = entry.quantityMove,
+                                itemName = item.name,
+                                userName = entry.userName,
+                                project = project
+                            )
+                        }
                     }
                 }
             }
         }
 
-        private val mockHistoryByItem = mapOf(
+        private val itMaterialMockHistoryByItem = mapOf(
             "USB-C Cable" to listOf(
                 MockHistoryEntry(LocalDateTime.of(2016, Month.MARCH, 3, 9, 15), 12, "johnny.bobson"),
                 MockHistoryEntry(LocalDateTime.of(2017, Month.JULY, 22, 14, 30), -2, "bobby.johnson"),
@@ -261,6 +298,56 @@ class DatabaseResetRunner(
                 MockHistoryEntry(LocalDateTime.of(2022, Month.FEBRUARY, 10, 14, 20), 9, "geoff.jefferson"),
                 MockHistoryEntry(LocalDateTime.of(2025, Month.DECEMBER, 12, 13, 15), -1, "bobby.bobson")
             )
+        )
+        private val garageMockHistoryByItem = mapOf(
+            "Brake Pads" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2022, Month.APRIL, 9, 9, 5), 20, "jeremy.hammond"),
+                MockHistoryEntry(LocalDateTime.of(2024, Month.DECEMBER, 11, 15, 10), 15, "richard.may"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.MARCH, 20, 11, 30), -4, "mia.tia"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.APRIL, 4, 9, 45), 12, "ced.ric")
+            ),
+            "Oil Filter" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2021, Month.JANUARY, 17, 8, 25), 60, "james.clarkson"),
+                MockHistoryEntry(LocalDateTime.of(2025, Month.SEPTEMBER, 3, 16, 40), -7, "richard.may"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.APRIL, 2, 10, 20), 20, "mia.tia")
+            ),
+            "Spark Plug Set" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2023, Month.JULY, 29, 10, 15), 25, "jeremy.hammond"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.FEBRUARY, 8, 13, 55), -3, "mia.tia"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.APRIL, 3, 13, 10), 9, "geoff.jefferson")
+            ),
+            "Headlight Bulb" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2024, Month.MARCH, 14, 9, 40), 40, "james.clarkson"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.JANUARY, 30, 17, 20), -9, "richard.may"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.APRIL, 5, 8, 35), 16, "ced.ric")
+            ),
+            "Car Battery" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2022, Month.OCTOBER, 6, 11, 35), 18, "jeremy.hammond"),
+                MockHistoryEntry(LocalDateTime.of(2025, Month.NOVEMBER, 19, 14, 5), -2, "mia.tia"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.APRIL, 1, 16, 25), 7, "richard.may")
+            ),
+            "Alternator Belt" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2023, Month.MAY, 2, 12, 45), 30, "richard.may"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.MARCH, 15, 8, 50), -5, "james.clarkson"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.APRIL, 2, 14, 40), 11, "jeremy.hammond")
+            ),
+            "Air Intake Filter" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2021, Month.NOVEMBER, 26, 9, 0), 28, "james.clarkson"),
+                MockHistoryEntry(LocalDateTime.of(2024, Month.JUNE, 18, 15, 30), 22, "jeremy.hammond"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.APRIL, 1, 10, 5), -6, "mia.tia"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.APRIL, 5, 11, 50), 10, "james.clarkson")
+            ),
+            "Windshield Wipers" to listOf(
+                MockHistoryEntry(LocalDateTime.of(2022, Month.FEBRUARY, 12, 14, 10), 35, "richard.may"),
+                MockHistoryEntry(LocalDateTime.of(2025, Month.DECEMBER, 7, 11, 25), -8, "jeremy.hammond"),
+                MockHistoryEntry(LocalDateTime.of(2026, Month.APRIL, 3, 15, 5), 14, "mia.tia")
+            )
+        )
+
+
+        private val mockHistoryByProjectAndItem = mapOf(
+            "it_material" to itMaterialMockHistoryByItem,
+            "garage" to garageMockHistoryByItem
         )
 
         private data class MockHistoryEntry(
