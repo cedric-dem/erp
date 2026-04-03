@@ -11,11 +11,11 @@ class AuthService(
         return repository.existsByUsernameAndPassword(username, password)
     }
 
-    fun register(username: String, password: String): Boolean {
+    fun register(username: String, password: String, project: String): Boolean {
         if (repository.existsByUsername(username)) {
             return false
         }
-        repository.save(UserCredential(username = username, password = password))
+        repository.save(UserCredential(username = username, password = password, project = project))
         return true
     }
 

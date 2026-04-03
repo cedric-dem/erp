@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestController
 
 data class AuthRequest(
     val username: String = "",
-    val password: String = ""
+    val password: String = "",
+    val project: String = "",
+    val projectAction: String = ""
 )
 
 data class AuthResponse(
@@ -42,12 +44,13 @@ class AuthController(
     fun register(@RequestBody request: AuthRequest): ResponseEntity<AuthResponse> {
         val username = request.username.trim()
         val password = request.password.trim()
+        val project = request.project.trim()
 
-        if (username.isEmpty() || password.isEmpty()) {
-            return ResponseEntity.badRequest().body(AuthResponse("Please choose a username and password."))
+        if (username.isEmpty() || password.isEmpty() || project.isEmpty()) {
+            return ResponseEntity.badRequest().body(AuthResponse("Please choose a username, password, and project."))
         }
 
-        val registered = authService.register(username, password)
+        val registered = authService.register(username, password, project)
         if (!registered) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(AuthResponse("This username already exists."))
         }
