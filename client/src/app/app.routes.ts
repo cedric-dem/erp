@@ -17,5 +17,5 @@ export const routes: Routes = [
   { path: 'history', component: HistoryPageComponent },
   { path: 'insights', component: InsightsPageComponent },
   { path: 'users', component: UsersPageComponent },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];

@@ -3,11 +3,23 @@
     <h1>{{ title() }}</h1>
     <p class="subtitle">{{ strings.subtitle }}</p>
 
-    <div class="tabs">
-      <button type="button" [class.active]="mode() === 'login'" (click)="setMode('login')">
+    <div class="tabs" role="tablist" aria-label="Authentication mode">
+      <button
+        type="button"
+        role="tab"
+        [attr.aria-selected]="mode() === 'login'"
+        [class.active]="mode() === 'login'"
+        [disabled]="isSubmitting()"
+        (click)="setMode('login')">
         {{ strings.loginTab }}
       </button>
-      <button type="button" [class.active]="mode() === 'register'" (click)="setMode('register')">
+      <button
+        type="button"
+        role="tab"
+        [attr.aria-selected]="mode() === 'register'"
+        [class.active]="mode() === 'register'"
+        [disabled]="isSubmitting()"
+        (click)="setMode('register')">
         {{ strings.registerTab }}
       </button>
     </div>
@@ -16,26 +28,48 @@
       <form class="form" (ngSubmit)="login()">
         <label>
           {{ strings.usernameLabel }}
-          <input name="loginUsername" type="text" [(ngModel)]="loginUsername" />
+          <input
+            name="loginUsername"
+            type="text"
+            autocomplete="username"
+            [(ngModel)]="loginUsername"
+            [disabled]="isSubmitting()" />
         </label>
 
         <label>
           {{ strings.passwordLabel }}
-          <input name="loginPassword" type="password" [(ngModel)]="loginPassword" />
+          <input
+            name="loginPassword"
+            type="password"
+            autocomplete="current-password"
+            [(ngModel)]="loginPassword"
+            [disabled]="isSubmitting()" />
         </label>
 
-        <button class="submit" type="submit">{{ strings.loginSubmit }}</button>
+        <button class="submit" type="submit" [disabled]="isSubmitting()">
+          {{ submitLabel() }}
+        </button>
       </form>
     } @else {
       <form class="form" (ngSubmit)="register()">
         <label>
           {{ strings.usernameLabel }}
-          <input name="registerUsername" type="text" [(ngModel)]="registerUsername" />
+          <input
+            name="registerUsername"
+            type="text"
+            autocomplete="username"
+            [(ngModel)]="registerUsername"
+            [disabled]="isSubmitting()" />
         </label>
 
         <label>
           {{ strings.passwordLabel }}
-          <input name="registerPassword" type="password" [(ngModel)]="registerPassword" />
+          <input
+            name="registerPassword"
+            type="password"
+            autocomplete="new-password"
+            [(ngModel)]="registerPassword"
+            [disabled]="isSubmitting()" />
         </label>
 
         <label>
@@ -44,13 +78,15 @@
             <button
               type="button"
               [class.active]="registerProjectAction === 'join'"
-              (click)="registerProjectAction = 'join'">
+              [disabled]="isSubmitting()"
+              (click)="setProjectAction('join')">
               {{ strings.joinProject }}
             </button>
             <button
               type="button"
               [class.active]="registerProjectAction === 'create'"
-              (click)="registerProjectAction = 'create'">
+              [disabled]="isSubmitting()"
+              (click)="setProjectAction('create')">
               {{ strings.createProject }}
             </button>
           </div>
@@ -58,10 +94,16 @@
 
         <label>
           {{ strings.projectLabel }}
-          <input name="registerProject" type="text" [(ngModel)]="registerProject" />
+          <input
+            name="registerProject"
+            type="text"
+            [(ngModel)]="registerProject"
+            [disabled]="isSubmitting()" />
         </label>
 
-        <button class="submit" type="submit">{{ strings.registerSubmit }}</button>
+        <button class="submit" type="submit" [disabled]="isSubmitting()">
+          {{ submitLabel() }}
+        </button>
       </form>
     }
 

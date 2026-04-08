@@ -7,7 +7,7 @@ import { ThemeService } from '../../services/theme.service';
   templateUrl: './settings-page.component.html',
   standalone: true,
   styleUrl: './settings-page.component.css',
-  imports: [SideNavComponent]
+  imports: [SideNavComponent],
 })
 export class SettingsPageComponent {
   readonly themeService = inject(ThemeService);

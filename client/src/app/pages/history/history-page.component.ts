@@ -14,7 +14,7 @@ interface InventoryModificationRow {
   templateUrl: './history-page.component.html',
   standalone: true,
   styleUrl: './history-page.component.css',
-  imports: [SideNavComponent]
+  imports: [SideNavComponent],
 })
 export class HistoryPageComponent implements OnInit {
   protected readonly modificationRows = signal<InventoryModificationRow[]>([]);
@@ -33,14 +33,16 @@ export class HistoryPageComponent implements OnInit {
 
   private loadHistoryModifications(): void {
     this.http
-      .get<InventoryModificationRow[]>(`/api/history-modifications?username=${encodeURIComponent(this.username)}`)
+      .get<
+        InventoryModificationRow[]
+      >(`/api/history-modifications?username=${encodeURIComponent(this.username)}`)
       .subscribe({
         next: (rows) => {
           this.modificationRows.set(rows);
         },
         error: () => {
           this.errorMessage.set('Could not load modification data.');
-        }
+        },
       });
   }
 }

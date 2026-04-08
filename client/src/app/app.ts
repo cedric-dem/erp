@@ -7,7 +7,7 @@ import { ThemeService } from './services/theme.service';
   templateUrl: './app.html',
   standalone: true,
   styleUrl: './app.css',
-  imports: [RouterOutlet]
+  imports: [RouterOutlet],
 })
 export class App {
   private readonly themeService = inject(ThemeService);

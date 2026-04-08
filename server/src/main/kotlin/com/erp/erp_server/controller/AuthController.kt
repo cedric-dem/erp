@@ -54,14 +54,19 @@ class AuthController(
         return when (authService.register(username, password, project, projectAction)) {
             AuthService.RegisterResult.SUCCESS -> ResponseEntity.status(HttpStatus.CREATED)
                 .body(AuthResponse("Account created successfully. You can now sign in."))
+
             AuthService.RegisterResult.USERNAME_EXISTS -> ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(AuthResponse("This username already exists."))
+
             AuthService.RegisterResult.PROJECT_EXISTS -> ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(AuthResponse("This project already exists. Please join it or choose another name."))
+
             AuthService.RegisterResult.PROJECT_NOT_FOUND -> ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(AuthResponse("Project not found. Please choose an existing project or create a new one."))
+
             AuthService.RegisterResult.INVALID_PROJECT_ACTION -> ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(AuthResponse("Invalid project action. Please choose to join an existing project or create a new one."))
+
             AuthService.RegisterResult.SAVE_FAILED -> ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(AuthResponse("Unable to create account. Please try a different username."))
         }

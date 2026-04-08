@@ -1,8 +1,8 @@
 export const APP_STRINGS = {
-  subtitle: 'Homepage.',
+  subtitle: 'Sign in to access your ERP workspace.',
   loginTab: 'Sign In',
   registerTab: 'Create Account',
-  usernameLabel: 'User',
+  usernameLabel: 'Username',
   passwordLabel: 'Password',
   projectLabel: 'Project',
   projectActionLabel: 'Project Access',
@@ -15,9 +15,10 @@ export const APP_STRINGS = {
     loginInvalid: 'Invalid credentials.',
     registerEmpty: 'Please choose a username, password, and project.',
     registerExists: 'This username already exists.',
-    registerProjectNotFound: 'Project not found. Please choose an existing project or create a new one.'
+    registerProjectNotFound:
+      'Project not found. Please choose an existing project or create a new one.',
   },
   success: {
-    registerCreated: 'Account created successfully. You can now sign in.'
-  }
+    registerCreated: 'Account created successfully. You can now sign in.',
+  },
 } as const;

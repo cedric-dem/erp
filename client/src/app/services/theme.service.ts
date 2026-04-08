@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { computed, inject, Injectable, signal } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemeService {
   private readonly document = inject(DOCUMENT);
@@ -10,7 +10,7 @@ export class ThemeService {
 
   readonly theme = signal<'light' | 'dark'>(this.getInitialTheme());
   readonly themeToggleLabel = computed(() =>
-    this.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+    this.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode',
   );
 
   constructor() {

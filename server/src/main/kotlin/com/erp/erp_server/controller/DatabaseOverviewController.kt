@@ -54,7 +54,8 @@ class DatabaseOverviewController(
 
                     val columns = readColumns(metaData, schema, table)
                     val fullTableName = buildQualifiedName(schema, table, quote)
-                    val rowCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM $fullTableName", Long::class.java) ?: 0L
+                    val rowCount =
+                        jdbcTemplate.queryForObject("SELECT COUNT(*) FROM $fullTableName", Long::class.java) ?: 0L
                     val sampleRows = jdbcTemplate.queryForList("SELECT * FROM $fullTableName LIMIT 5")
 
                     tables += TableOverview(
@@ -84,8 +85,12 @@ class DatabaseOverviewController(
 
         return DatabaseResetResponse(
             mode = resetMode.name.lowercase(),
-            inventoryItems = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM inventory_items", Long::class.java) ?: 0L,
-            historyEntries = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM inventory_modifications", Long::class.java)
+            inventoryItems = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM inventory_items", Long::class.java)
+                ?: 0L,
+            historyEntries = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM inventory_modifications",
+                Long::class.java
+            )
                 ?: 0L,
             users = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM user_credentials", Long::class.java) ?: 0L
         )

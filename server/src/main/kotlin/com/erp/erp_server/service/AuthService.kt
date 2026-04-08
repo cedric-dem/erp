@@ -1,10 +1,7 @@
 package com.erp.erp_server
 
-
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
-
-
 
 @Service
 class AuthService(
@@ -40,7 +37,6 @@ class AuthService(
             return RegisterResult.PROJECT_EXISTS
         }
 
-
         val userType = if (projectAction == "create") "ADMIN" else "NORMAL"
         return try {
             repository.save(
@@ -60,5 +56,4 @@ class AuthService(
     fun findProjectByUsername(username: String): String? {
         return repository.findByUsername(username)?.project
     }
-
 }

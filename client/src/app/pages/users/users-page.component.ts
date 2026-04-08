@@ -20,7 +20,7 @@ type UserSummaryApiResponse = {
   templateUrl: './users-page.component.html',
   standalone: true,
   styleUrl: './users-page.component.css',
-  imports: [SideNavComponent]
+  imports: [SideNavComponent],
 })
 export class UsersPageComponent implements OnInit {
   protected readonly userRows = signal<UserSummary[]>([]);
@@ -29,13 +29,18 @@ export class UsersPageComponent implements OnInit {
   constructor(private readonly http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<UserSummaryApiResponse[]>(`/api/users?username=${encodeURIComponent(this.username)}`).subscribe({
-      next: (rows) => this.userRows.set(rows.map((row) => ({
-        id: row.id,
-        username: row.username,
-        userType: (row.userType ?? row.user_type ?? 'normal').toLowerCase()
-      }))),
-      error: () => this.userRows.set([])
-    });
+    this.http
+      .get<UserSummaryApiResponse[]>(`/api/users?username=${encodeURIComponent(this.username)}`)
+      .subscribe({
+        next: (rows) =>
+          this.userRows.set(
+            rows.map((row) => ({
+              id: row.id,
+              username: row.username,
+              userType: (row.userType ?? row.user_type ?? 'normal').toLowerCase(),
+            })),
+          ),
+        error: () => this.userRows.set([]),
+      });
   }
 }

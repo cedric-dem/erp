@@ -6,6 +6,6 @@ import { SideNavComponent } from '../../components/side-nav/side-nav.component';
   templateUrl: './bill-page.component.html',
   standalone: true,
   styleUrl: './bill-page.component.css',
-  imports: [SideNavComponent]
+  imports: [SideNavComponent],
 })
 export class BillPageComponent {}

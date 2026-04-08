@@ -17,7 +17,7 @@ interface InventoryItem {
   templateUrl: './inventory-page.component.html',
   standalone: true,
   styleUrl: './inventory-page.component.css',
-  imports: [SideNavComponent, FormsModule]
+  imports: [SideNavComponent, FormsModule],
 })
 export class InventoryPageComponent implements OnInit {
   protected readonly inventoryRows = signal<InventoryRow[]>([]);
@@ -59,13 +59,13 @@ export class InventoryPageComponent implements OnInit {
         name,
         quantity: this.newQuantity,
         price: this.newPrice,
-        userName: this.username
+        userName: this.username,
       })
       .subscribe({
         next: (createdItem) => {
           this.inventoryRows.update((rows) => [
             ...rows,
-            [createdItem.name, createdItem.quantity, createdItem.price]
+            [createdItem.name, createdItem.quantity, createdItem.price],
           ]);
           this.newName = '';
           this.newQuantity = 0;
@@ -74,7 +74,7 @@ export class InventoryPageComponent implements OnInit {
         },
         error: () => {
           this.errorMessage.set('Could not add the item. Please try again.');
-        }
+        },
       });
   }
 
@@ -83,13 +83,15 @@ export class InventoryPageComponent implements OnInit {
   }
 
   private loadInventory(): void {
-    this.http.get<InventoryItem[]>(`/api/inventory?username=${encodeURIComponent(this.username)}`).subscribe({
-      next: (items) => {
-        this.inventoryRows.set(items.map((item) => [item.name, item.quantity, item.price]));
-      },
-      error: () => {
-        this.errorMessage.set('Could not load inventory data.');
-      }
-    });
+    this.http
+      .get<InventoryItem[]>(`/api/inventory?username=${encodeURIComponent(this.username)}`)
+      .subscribe({
+        next: (items) => {
+          this.inventoryRows.set(items.map((item) => [item.name, item.quantity, item.price]));
+        },
+        error: () => {
+          this.errorMessage.set('Could not load inventory data.');
+        },
+      });
   }
 }

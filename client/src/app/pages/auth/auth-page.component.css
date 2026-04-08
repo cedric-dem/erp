@@ -37,21 +37,7 @@ h1 {
 }
 
 .tabs button,
-.submit {
-  height: 40px;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--surface-alt-color);
-  color: var(--text-main);
-  font-weight: 600;
-  cursor: pointer;
-}
-.project-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
+.submit,
 .project-actions button {
   height: 40px;
   border-radius: 10px;
@@ -60,20 +46,21 @@ h1 {
   color: var(--text-main);
   font-weight: 600;
   cursor: pointer;
+  transition: opacity 120ms ease;
 }
-
-.project-actions button.active {
-  background: var(--button-primary);
-  color: var(--button-primary-text);
-  border-color: transparent;
-}
-
 
 .tabs button.active,
+.project-actions button.active,
 .submit {
   background: var(--button-primary);
   color: var(--button-primary-text);
   border-color: transparent;
+}
+
+.project-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
 .form {
@@ -94,6 +81,12 @@ input {
   padding: 0 12px;
   background: var(--surface-alt-color);
   color: var(--text-main);
+}
+
+button:disabled,
+input:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .feedback {

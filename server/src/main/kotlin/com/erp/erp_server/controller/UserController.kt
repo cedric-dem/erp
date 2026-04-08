@@ -1,9 +1,7 @@
 package com.erp.erp_server
 
-import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 data class UserSummaryResponse(
@@ -15,17 +13,11 @@ data class UserSummaryResponse(
 @RestController
 class UserController(
     private val userCredentialRepository: UserCredentialRepository,
-    private val authService: AuthService
+    private val projectAccessService: ProjectAccessService
 ) {
     @GetMapping("/api/users")
     fun users(@RequestParam username: String): List<UserSummaryResponse> {
-        val sanitizedUsername = username.trim()
-        if (sanitizedUsername.isEmpty()) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing username")
-        }
-
-        val project = authService.findProjectByUsername(sanitizedUsername)
-            ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Unknown user")
+        val project = projectAccessService.resolveProjectOrThrow(username)
 
         return userCredentialRepository.findAllByProject(project)
             .sortedBy { it.id }
