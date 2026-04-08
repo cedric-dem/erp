@@ -39,7 +39,7 @@ class UserController(
         @PathVariable id: Long,
         @RequestParam username: String
     ): UserSummaryResponse {
-        val requester = userCredentialRepository.findByUsername(username.trim())
+        val requester = userCredentialRepository.findByUsernameIgnoreCase(username.trim())
             ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Unknown user")
 
         val target = userCredentialRepository.findById(id).orElseThrow {

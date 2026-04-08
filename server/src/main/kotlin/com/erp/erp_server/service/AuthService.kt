@@ -54,6 +54,6 @@ class AuthService(
     }
 
     fun findProjectByUsername(username: String): String? {
-        return repository.findByUsername(username)?.project
+        return repository.findByUsernameIgnoreCase(username)?.project
     }
 }
