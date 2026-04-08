@@ -46,7 +46,7 @@ class UserController(
             ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
         }
 
-        val requesterProject = projectAccessService.resolveProjectOrThrow(requester.username)
+        val requesterProject = requester.project.trim()
         val requesterIsNewUser = requester.userType.trim().equals("NEW_USER", ignoreCase = true)
         val requesterCanApproveNewUsers = !requesterIsNewUser
         val requesterIsTargetUser = requester.id == target.id
@@ -58,7 +58,7 @@ class UserController(
             )
         }
 
-        if (!target.project.equals(requesterProject, ignoreCase = true)) {
+        if (!target.project.trim().equals(requesterProject, ignoreCase = true)) {
             throw ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot modify users from another project")
         }
 
