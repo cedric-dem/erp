@@ -17,6 +17,9 @@
           <tr>
             <th>Username</th>
             <th>User Type</th>
+            @if (isAdmin()) {
+              <th>Actions</th>
+            }
           </tr>
           </thead>
           <tbody>
@@ -24,10 +27,26 @@
               <tr>
                 <td>{{ row.username }}</td>
                 <td>{{ row.userType }}</td>
+                @if (isAdmin()) {
+                  <td>
+                    @if (row.userType === 'new_user') {
+                      <button
+                        type="button"
+                        class="action-button"
+                        [disabled]="promotingUserId() !== null"
+                        (click)="makeUserNormal(row.id)">
+                        <span class="action-button__icon" aria-hidden="true">↺</span>
+                        {{ promotingUserId() === row.id ? 'Switching…' : 'Switch to normal' }}
+                      </button>
+                    } @else {
+                      <span class="no-action">-</span>
+                    }
+                  </td>
+                }
               </tr>
             } @empty {
               <tr>
-                <td class="empty-row" colspan="2">No users to display.</td>
+                <td class="empty-row" [attr.colspan]="isAdmin() ? 3 : 2">No users to display.</td>
               </tr>
             }
           </tbody>

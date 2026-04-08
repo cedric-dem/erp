@@ -37,7 +37,7 @@ class AuthService(
             return RegisterResult.PROJECT_EXISTS
         }
 
-        val userType = if (projectAction == "create") "ADMIN" else "NORMAL"
+        val userType = if (projectAction == "create") "ADMIN" else "NEW_USER"
         return try {
             repository.save(
                 UserCredential(
