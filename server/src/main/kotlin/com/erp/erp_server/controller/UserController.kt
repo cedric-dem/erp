@@ -48,10 +48,15 @@ class UserController(
 
         val requesterProject = projectAccessService.resolveProjectOrThrow(requester.username)
         val requesterIsAdmin = requester.userType.equals("ADMIN", ignoreCase = true)
+        val requesterIsNormal = requester.userType.equals("NORMAL", ignoreCase = true)
+        val requesterCanApproveNewUsers = requesterIsAdmin || requesterIsNormal
         val requesterIsTargetUser = requester.id == target.id
 
-        if (!requesterIsAdmin && !requesterIsTargetUser) {
-            throw ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can change other users")
+        if (!requesterCanApproveNewUsers && !requesterIsTargetUser) {
+            throw ResponseStatusException(
+                HttpStatus.FORBIDDEN,
+                "Only normal/admin users can change other users"
+            )
         }
 
         if (!target.project.equals(requesterProject, ignoreCase = true)) {

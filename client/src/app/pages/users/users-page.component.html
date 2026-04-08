@@ -17,7 +17,7 @@
           <tr>
             <th>Username</th>
             <th>User Type</th>
-            @if (isAdmin()) {
+            @if (canManageNewUsers()) {
               <th>Actions</th>
             }
           </tr>
@@ -27,7 +27,7 @@
               <tr>
                 <td>{{ row.username }}</td>
                 <td>{{ row.userType }}</td>
-                @if (isAdmin()) {
+                @if (canManageNewUsers()) {
                   <td>
                     @if (row.userType === 'new_user') {
                       <button
@@ -46,7 +46,7 @@
               </tr>
             } @empty {
               <tr>
-                <td class="empty-row" [attr.colspan]="isAdmin() ? 3 : 2">No users to display.</td>
+                <td class="empty-row" [attr.colspan]="canManageNewUsers() ? 3 : 2">No users to display.</td>
               </tr>
             }
           </tbody>

@@ -7,7 +7,6 @@ type UserSummary = {
   username: string;
   userType: string;
 };
-
 type UserSummaryApiResponse = {
   id: number;
   username: string;
@@ -30,7 +29,7 @@ type UpdateUserResponse = {
 })
 export class UsersPageComponent implements OnInit {
   protected readonly userRows = signal<UserSummary[]>([]);
-  protected readonly isAdmin = signal(false);
+  protected readonly canManageNewUsers = signal(false);
   protected readonly promotingUserId = signal<number | null>(null);
   private readonly username = sessionStorage.getItem('erpUsername') ?? '';
 
@@ -41,7 +40,7 @@ export class UsersPageComponent implements OnInit {
   }
 
   protected makeUserNormal(userId: number): void {
-    if (!this.isAdmin() || this.promotingUserId() !== null) {
+    if (!this.canManageNewUsers() || this.promotingUserId() !== null) {
       return;
     }
 
@@ -61,6 +60,7 @@ export class UsersPageComponent implements OnInit {
                 : row,
             ),
           );
+          this.refreshManagePermission(this.userRows());
           this.promotingUserId.set(null);
         },
         error: () => this.promotingUserId.set(null),
@@ -79,18 +79,23 @@ export class UsersPageComponent implements OnInit {
           }));
 
           this.userRows.set(mappedRows);
-          this.isAdmin.set(
-            mappedRows.some((row) => row.username === this.username && row.userType === 'admin'),
-          );
+          this.refreshManagePermission(mappedRows);
         },
         error: () => {
           this.userRows.set([]);
-          this.isAdmin.set(false);
+          this.canManageNewUsers.set(false);
         },
       });
   }
 
   private normalizeUserType(userType?: string | null): string {
     return (userType ?? 'normal').toLowerCase();
+  }
+
+  private refreshManagePermission(rows: UserSummary[]): void {
+    const loggedInUser = rows.find((row) => row.username === this.username);
+    this.canManageNewUsers.set(
+      loggedInUser !== undefined && loggedInUser.userType !== 'new_user',
+    );
   }
 }
